@@ -14,7 +14,11 @@ const WORKOUTS = {
   c: workoutC,
 };
 export default function Main() {
-  const [workout, setWorkout] = useState<WorkoutType>('a');
+  const [workout, setWorkout] = useState<WorkoutType>(() => {
+    const value = localStorage.getItem('workoutType');
+    return (value || 'a') as WorkoutType;
+  });
+
   const selectedWorkout = useMemo(() => WORKOUTS[workout], [workout]);
   const selectedAreas = useMemo(() => {
     const areas = Object.keys(WORKOUTS[workout]) as WorkoutAreas[];
@@ -23,6 +27,7 @@ export default function Main() {
 
   function handleChangeWorkout(event: SelectChangeEvent) {
     setWorkout(event.target.value as WorkoutType);
+    localStorage.setItem('workoutType', event.target.value);
   }
 
   return (
