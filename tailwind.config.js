@@ -25,7 +25,7 @@ export default {
           light: '#1ABCA6',
         },
         white: {
-          DEFAULT: '#FFF',
+          DEFAULT: '#f8f8ff',
           light: 'rgb(255,255,255,0.1)',
         },
       },

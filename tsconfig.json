@@ -13,6 +13,9 @@
       "@lib/*": [
         "./src/lib/*"
       ],
+      "@mock/*": [
+        "./src/mock/*"
+      ],
       "@pages/*": [
         "./src/pages/*"
       ],
