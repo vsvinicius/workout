@@ -1,6 +1,6 @@
 import { WorkoutAreas, WorkoutExercise } from './workout-A';
 
-export const workoutB: Record<WorkoutAreas, WorkoutExercise[]> = {
+export const workoutBVini: Record<WorkoutAreas, WorkoutExercise[]> = {
   dorsais: [
     {
       name: 'Puxador F.',
@@ -56,5 +56,64 @@ export const workoutB: Record<WorkoutAreas, WorkoutExercise[]> = {
   ],
   peito: [],
   triceps: [],
+  perna: [],
+};
+export const workoutBThy: Record<WorkoutAreas, WorkoutExercise[]> = {
+  peito: [
+    {
+      name: 'Supino Máquina',
+      reps: 12,
+      series: 4,
+    },
+    {
+      name: 'Peck Deck',
+      reps: 12,
+      series: 4,
+    },
+  ],
+  dorsais: [
+    {
+      name: 'Puxador F.',
+      reps: 12,
+      series: 4,
+    },
+    {
+      name: 'Remo',
+      reps: 12,
+      series: 4,
+    },
+  ],
+  biceps: [
+    {
+      name: 'Rosca Direta',
+      reps: 12,
+      series: 4,
+    },
+    {
+      name: 'Rosca Martelo',
+      reps: 12,
+      series: 4,
+    },
+  ],
+  triceps: [
+    {
+      name: 'Pulley',
+      reps: 12,
+      series: 4,
+    },
+    {
+      name: 'Banco Mergulho',
+      reps: 12,
+      series: 4,
+    },
+  ],
+  abdomen: [
+    {
+      name: 'Oblíquo',
+      reps: 12,
+      series: 4,
+    },
+  ],
+  ombro: [],
   perna: [],
 };
