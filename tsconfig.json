@@ -22,6 +22,12 @@
       "@models/*": [
         "./src/models/*"
       ],
+      "@context/*": [
+        "./src/context/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
       "@src/*": [
         "./src/*"
       ]

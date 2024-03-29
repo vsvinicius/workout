@@ -1,30 +1,26 @@
-import { WorkoutExercise } from '@mock/workout-A';
+import { Exercise } from '@models/Exercise';
 import { AutoAwesomeMotionOutlined, CachedOutlined } from '@mui/icons-material';
 import { Card, Box, Typography, Button, Checkbox } from '@mui/material';
 import { useState } from 'react';
 
-export default function ExerciseItem({
-  exercise,
-}: {
-  exercise: WorkoutExercise;
-}) {
-  const [currentSerie, setCurrentSerie] = useState(() => {
+export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
+  const [currentSet, setCurrentSet] = useState(() => {
     const value = localStorage.getItem(exercise.name);
-    if (!value) return 0;
-    return parseInt(value);
+    if (!value) return '0';
+    return value;
   });
 
-  function handleClickNextSerie() {
-    localStorage.setItem(exercise.name, `${currentSerie + 1}`);
-    setCurrentSerie((prevValue) => prevValue + 1);
+  function handleClickNextSet() {
+    localStorage.setItem(exercise.name, `${currentSet + 1}`);
+    setCurrentSet((prevValue) => `${+prevValue + 1}`);
   }
 
   function handleResetExercise(event: React.ChangeEvent<HTMLInputElement>) {
     localStorage.setItem(
       exercise.name,
-      `${event.target.checked ? exercise.series : 0}`,
+      `${event.target.checked ? exercise.sets : 0}`,
     );
-    setCurrentSerie(event.target.checked ? exercise.series : 0);
+    setCurrentSet(event.target.checked ? exercise.sets : '0');
   }
 
   return (
@@ -40,7 +36,7 @@ export default function ExerciseItem({
           <Box className="flex items-center gap-1">
             <AutoAwesomeMotionOutlined className="w-4 text-gray-500" />
             <Typography variant="body2" className="text-[#AFB1B2]">
-              {exercise.series}
+              {exercise.sets}
             </Typography>
           </Box>
           <Box className="flex items-center gap-1">
@@ -53,16 +49,16 @@ export default function ExerciseItem({
       </Box>
       <Button
         variant="contained"
-        onClick={handleClickNextSerie}
-        disabled={currentSerie === exercise.series}
+        onClick={handleClickNextSet}
+        disabled={currentSet === exercise.sets}
         sx={{
           '&.Mui-disabled': {
             bgcolor: 'gray',
           },
         }}
-      >{`${currentSerie}/${exercise.series}`}</Button>
+      >{`${currentSet}/${exercise.sets}`}</Button>
       <Checkbox
-        checked={currentSerie === exercise.series}
+        checked={currentSet === exercise.sets}
         color="success"
         onChange={handleResetExercise}
         sx={{
