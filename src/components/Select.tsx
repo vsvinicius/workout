@@ -4,10 +4,8 @@ import {
   MenuItem,
   Select as MuiSelect,
   SelectChangeEvent,
-  TextField,
-  Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export type OptionType = {
   value: string;
