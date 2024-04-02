@@ -17,8 +17,8 @@ export default defineConfig({
     VitePWA({
       includeAssets: ['/favicon.svg'],
       manifest: {
-        theme_color: '#8936FF',
-        background_color: '#2EC6FE',
+        theme_color: '027ffe',
+        background_color: '#1C1C1E',
         icons: [
           {
             purpose: 'maskable',
