@@ -35,7 +35,7 @@ export default function Select({
     setSelectedOption(selected);
     onChange?.(selected);
   }
-  if (isLoading) {
+  if (isLoading || !options.length) {
     return (
       <Box className="flex h-12 min-w-40 items-center justify-center rounded-lg border border-solid border-[#AFB1B2] text-white">
         <CircularProgress size={20} />

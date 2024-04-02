@@ -26,7 +26,7 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   return (
     <Card
       elevation={0}
-      className="my-4 flex w-[98%] items-center justify-around border border-solid border-white-light bg-[#11161B] px-4 py-2"
+      className="my-4 flex w-[98%] items-center justify-around border border-solid border-white-light bg-[#2C2C2E] px-4 py-2"
     >
       <Box className="w-1/2">
         <Typography className="font-semibold text-[#AFB1B2]">

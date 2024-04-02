@@ -42,7 +42,7 @@ export default function Main() {
   }
 
   return (
-    <div className="h-full w-full bg-[#101418]" style={{ minHeight: '100vh' }}>
+    <div className="h-full w-full bg-[#1C1C1E]" style={{ minHeight: '100vh' }}>
       <header className="relative flex justify-center pt-10">
         <Select
           options={
