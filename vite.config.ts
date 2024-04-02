@@ -15,7 +15,7 @@ export default defineConfig({
     tsconfigPaths(),
     react(),
     VitePWA({
-      includeAssets: ['/public/favicon.svg'],
+      includeAssets: ['public/favicon.svg'],
       manifest: {
         theme_color: '#8936FF',
         background_color: '#2EC6FE',
@@ -23,13 +23,13 @@ export default defineConfig({
           {
             purpose: 'maskable',
             sizes: '512x512',
-            src: '/public/icon512_maskable.png',
+            src: 'public/icon512_maskable.png',
             type: 'image/png',
           },
           {
             purpose: 'any',
             sizes: '512x512',
-            src: '/public/icon512_rounded.png',
+            src: 'public/icon512_rounded.png',
             type: 'image/png',
           },
         ],
