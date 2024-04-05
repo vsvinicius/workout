@@ -20,6 +20,7 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
       exercise.name,
       `${event.target.checked ? exercise.sets : 0}`,
     );
+
     setCurrentSet(event.target.checked ? exercise.sets : 0);
   }
   return (
