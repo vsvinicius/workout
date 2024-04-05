@@ -13,7 +13,7 @@ export default defineConfig({
   },
   plugins: [
     tsconfigPaths(),
-    react(),
+    react({ tsDecorators: true }),
     VitePWA({
       includeAssets: ['/favicon.svg'],
       manifest: {

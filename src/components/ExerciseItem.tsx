@@ -1,18 +1,18 @@
+import { useState } from 'react';
 import { Exercise } from '@models/Exercise';
 import { AutoAwesomeMotionOutlined, CachedOutlined } from '@mui/icons-material';
 import { Card, Box, Typography, Button, Checkbox } from '@mui/material';
-import { useState } from 'react';
 
 export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
-  const [currentSet, setCurrentSet] = useState(() => {
+  const [currentSet, setCurrentSet] = useState<number>(() => {
     const value = localStorage.getItem(exercise.name);
-    if (!value) return '0';
-    return value;
+    if (!value) return 0;
+    return parseInt(value, 10);
   });
 
   function handleClickNextSet() {
     localStorage.setItem(exercise.name, `${currentSet + 1}`);
-    setCurrentSet((prevValue) => `${+prevValue + 1}`);
+    setCurrentSet((prevValue) => prevValue + 1);
   }
 
   function handleResetExercise(event: React.ChangeEvent<HTMLInputElement>) {
@@ -20,9 +20,8 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
       exercise.name,
       `${event.target.checked ? exercise.sets : 0}`,
     );
-    setCurrentSet(event.target.checked ? exercise.sets : '0');
+    setCurrentSet(event.target.checked ? exercise.sets : 0);
   }
-
   return (
     <Card
       elevation={0}

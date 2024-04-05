@@ -5,7 +5,7 @@ import {
   Select as MuiSelect,
   SelectChangeEvent,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type OptionType = {
   value: string;
@@ -35,7 +35,8 @@ export default function Select({
     setSelectedOption(selected);
     onChange?.(selected);
   }
-  if (isLoading || !options.length) {
+
+  if (isLoading || !options.length || !selectedOption) {
     return (
       <Box className="flex h-12 min-w-40 items-center justify-center rounded-lg border border-solid border-[#AFB1B2] text-white">
         <CircularProgress size={20} />
@@ -45,7 +46,7 @@ export default function Select({
 
   return (
     <MuiSelect
-      value={selectedOption?.value || ''}
+      value={selectedOption?.value}
       onChange={handleChangeOption}
       disabled={isLoading}
       variant="standard"

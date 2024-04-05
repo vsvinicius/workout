@@ -1,10 +1,12 @@
+import { Type } from 'class-transformer';
+import 'reflect-metadata';
 interface ExerciseInterface {
   id: string;
   workoutId: string;
   name: string;
   muscleGroup: string;
   reps: string;
-  sets: string;
+  sets: number;
 }
 
 export class Exercise implements ExerciseInterface {
@@ -13,7 +15,9 @@ export class Exercise implements ExerciseInterface {
   workoutId: string;
   muscleGroup: string;
   reps: string;
-  sets: string;
+
+  @Type(() => Number)
+  sets!: number;
 
   constructor(
     id: string,
@@ -21,7 +25,7 @@ export class Exercise implements ExerciseInterface {
     workoutId: string,
     muscleGroup: string,
     reps: string,
-    sets: string,
+    sets: number,
   ) {
     this.id = id;
     this.name = name;
@@ -30,4 +34,7 @@ export class Exercise implements ExerciseInterface {
     this.reps = reps;
     this.sets = sets;
   }
+  // get formattedSets(): number {
+  //   return parseInt(this.sets);
+  // }
 }
