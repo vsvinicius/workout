@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import UsersAvatar from '@components/UsersAvatar';
 import { useUserContext } from '@context/UserContext';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import WorkoutsService from '@services/WorkoutsService';
 import { Workout } from '@models/Workout';
-import { plainToInstance } from 'class-transformer';
 import { OptionType } from '@components/Select';
 import Select from '@components/Select';
 import ExerciseList from '@components/ExerciseList';
 
+const queryClient = new QueryClient();
+
 export default function Main() {
   const { selectedUser } = useUserContext();
+  const [workout, setWorkout] = useState<Workout | null>(null);
   const {
     data: workouts,
     refetch,
@@ -20,17 +22,23 @@ export default function Main() {
     queryFn: () => WorkoutsService.getWorkouts(selectedUser?.id || ''),
     enabled: false,
   });
+  const workoutOptions = useMemo(
+    () =>
+      workouts?.map(({ name, id }) => ({
+        label: name,
+        value: id,
+      })) || [],
+    [workouts],
+  );
 
   useEffect(() => {
     if (!selectedUser) return;
+    setWorkout(null);
+    queryClient.invalidateQueries({
+      queryKey: [`user-workouts-${selectedUser?.id}`],
+    });
     refetch();
   }, [selectedUser]);
-
-  const [workout, setWorkout] = useState<Workout | null>(() => {
-    const value = localStorage.getItem('workoutType');
-    if (!value) return null;
-    return plainToInstance(Workout, JSON.parse(value) as Workout);
-  });
 
   function handleChangeWorkout(selectedOption: OptionType) {
     const selectedWorkout = workouts?.find(
@@ -38,24 +46,16 @@ export default function Main() {
     );
     if (!selectedWorkout) return;
     setWorkout(selectedWorkout);
-    localStorage.setItem('workoutType', JSON.stringify(selectedWorkout));
   }
 
   return (
     <div className="h-full w-full bg-[#1C1C1E]" style={{ minHeight: '100vh' }}>
       <header className="relative flex justify-center pt-10">
         <Select
-          options={
-            workouts?.map(({ name, id }) => ({
-              label: name,
-              value: id,
-            })) || []
-          }
+          options={workoutOptions}
           isLoading={isLoading}
           onChange={handleChangeWorkout}
-          defaultOption={
-            workout ? { label: workout?.name, value: workout?.id } : null
-          }
+          required
         />
         <div className="absolute right-5">
           <UsersAvatar />

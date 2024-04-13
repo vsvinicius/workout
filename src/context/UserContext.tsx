@@ -10,15 +10,10 @@ interface UserContextInterface {
 const UserContext = createContext<UserContextInterface | null>(null);
 
 export default function UserContextProvider({ children }: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>(() => {
-    const value = localStorage.getItem('user');
-    if (!value) return null;
-    return plainToInstance(User, JSON.parse(value) as User);
-  });
+  const [user, setUser] = useState<User | null>(null);
 
   function setSelectedUser(user: User) {
     setUser(user);
-    localStorage.setItem('user', JSON.stringify(user));
   }
 
   return (

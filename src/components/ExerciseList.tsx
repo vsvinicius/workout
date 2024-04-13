@@ -40,7 +40,7 @@ export default function ExerciseList({ workoutId }: ExerciseListProps) {
   }
 
   return muscleGroups.map((group) => (
-    <div key={group} className="w-full">
+    <div key={group} className="mt-2 w-full">
       <Typography variant="h5" className="m-4 font-bold capitalize text-white">
         {group}
       </Typography>

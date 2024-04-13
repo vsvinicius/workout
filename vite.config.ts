@@ -33,7 +33,7 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
-        orientation: 'any',
+        orientation: 'portrait',
         display: 'standalone',
         lang: 'pt-BR',
         name: 'workout',

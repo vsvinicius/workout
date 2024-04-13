@@ -5,7 +5,7 @@ import {
   Select as MuiSelect,
   SelectChangeEvent,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type OptionType = {
   value: string;
@@ -17,17 +17,30 @@ interface SelectProps {
   isLoading?: boolean;
   defaultOption?: OptionType | null;
   onChange?: (option: OptionType) => void;
+  required?: boolean;
 }
 
 export default function Select({
   options,
   onChange,
   isLoading = false,
+  required = false,
   defaultOption = null,
 }: SelectProps) {
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(
     defaultOption,
   );
+
+  useEffect(() => {
+    setSelectedOption(null);
+  }, [options]);
+
+  useEffect(() => {
+    if (required && selectedOption === null && options.length !== 0) {
+      setSelectedOption(defaultOption || options[0]);
+      onChange?.(defaultOption || options[0]);
+    }
+  }, [defaultOption, options, isLoading]);
 
   function handleChangeOption(event: SelectChangeEvent) {
     const selected = options?.find(({ value }) => value === event.target.value);
@@ -46,7 +59,7 @@ export default function Select({
 
   return (
     <MuiSelect
-      value={selectedOption?.value}
+      value={selectedOption?.value ?? ''}
       onChange={handleChangeOption}
       disabled={isLoading}
       variant="standard"
