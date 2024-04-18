@@ -31,7 +31,7 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
         className="flex h-full w-full flex-col items-start justify-center text-white"
         onClick={handleResetExercise}
       >
-        <Typography className="font-semibold" variant="h5">
+        <Typography className="text-lg font-semibold">
           {exercise.name}
         </Typography>
         <Box className="mt-2 flex gap-2">
