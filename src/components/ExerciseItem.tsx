@@ -18,7 +18,7 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   return (
     <Card
       elevation={10}
-      className="my-3 flex h-32 w-[96%] items-center justify-around border border-solid border-white-light bg-[#2C2C2E] px-6 py-8"
+      className="my-3 flex h-32 w-[96%] items-center justify-around border border-solid border-white-light bg-background-light px-6 py-8"
       sx={{
         ...(currentSet === exercise.sets && {
           outline: '2px solid #5cb85c',

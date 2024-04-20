@@ -55,11 +55,11 @@ export default function UsersAvatar() {
         anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
         slotProps={{
           paper: {
-            className: 'bg-[#11161B]',
+            className: 'bg-background-light',
           },
         }}
       >
-        <MenuList className="rounded-md border border-solid border-white-light bg-[#11161B] p-0">
+        <MenuList className="rounded-md border border-solid border-white-light bg-background-light p-0">
           {users?.map((user) => (
             <MenuItem
               key={user.id}

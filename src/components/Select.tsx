@@ -51,7 +51,7 @@ export default function Select({
 
   if (isLoading || !options.length) {
     return (
-      <Box className="flex h-12 min-w-40 items-center justify-center rounded-lg border border-solid border-[#AFB1B2] text-white">
+      <Box className="border-paper-light flex h-12 min-w-40 items-center justify-center rounded-lg border border-solid text-white">
         <CircularProgress size={20} />
       </Box>
     );
@@ -74,11 +74,11 @@ export default function Select({
       MenuProps={{
         slotProps: {
           paper: {
-            className: 'bg-[#11161B] mt-1',
+            className: 'mt-1',
           },
         },
         MenuListProps: {
-          className: 'bg-[#11161B] p-0',
+          className: 'p-0',
         },
       }}
     >
@@ -86,7 +86,7 @@ export default function Select({
         <MenuItem
           value={option.value}
           key={option.value}
-          className="py-3 text-[#AFB1B2]"
+          className="py-3 text-black"
         >
           {option.label}
         </MenuItem>

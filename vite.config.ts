@@ -17,7 +17,7 @@ export default defineConfig({
     VitePWA({
       includeAssets: ['/favicon.svg'],
       manifest: {
-        theme_color: '027ffe',
+        theme_color: '#027ffe',
         background_color: '#1C1C1E',
         icons: [
           {

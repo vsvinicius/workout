@@ -14,6 +14,8 @@ export default {
         },
         paper: {
           DEFAULT: '#2C2C2E',
+          light: '#AFB1B2',
+          dark: '#11161B',
         },
         primary: {
           DEFAULT: '#7C4DFF',
@@ -21,12 +23,15 @@ export default {
           light: '#E0E3FF',
         },
         success: {
-          DEFAULT: '#00BFA5',
+          DEFAULT: '#5CB85C',
           light: '#1ABCA6',
         },
         white: {
-          DEFAULT: '#f8f8ff',
+          DEFAULT: '#F8F8FF',
           light: 'rgb(255,255,255,0.1)',
+        },
+        black: {
+          DEFAULT: '#1C1C1E',
         },
       },
     },
