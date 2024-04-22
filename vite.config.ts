@@ -16,8 +16,9 @@ export default defineConfig({
     react({ tsDecorators: true }),
     VitePWA({
       includeAssets: ['/favicon.svg'],
+      registerType: 'autoUpdate',
       manifest: {
-        theme_color: '027ffe',
+        theme_color: '#027ffe',
         background_color: '#1C1C1E',
         icons: [
           {

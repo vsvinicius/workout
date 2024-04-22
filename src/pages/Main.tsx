@@ -6,7 +6,7 @@ import WorkoutsService from '@services/WorkoutsService';
 import { Workout } from '@models/Workout';
 import { OptionType } from '@components/Select';
 import Select from '@components/Select';
-import ExerciseList from '@components/ExerciseList';
+import ExerciseList from '@components/exercise-ui/ExerciseList';
 
 const queryClient = new QueryClient();
 

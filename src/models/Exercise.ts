@@ -1,10 +1,12 @@
 import { Type } from 'class-transformer';
 import 'reflect-metadata';
+import { PersonalRecord } from '@models/PersonalRecord';
 interface ExerciseInterface {
   id: string;
   workoutId: string;
   name: string;
   muscleGroup: string;
+  lastPersonalRecord: PersonalRecord | null;
   reps: string;
   sets: number;
 }
@@ -15,6 +17,7 @@ export class Exercise implements ExerciseInterface {
   workoutId: string;
   muscleGroup: string;
   reps: string;
+  lastPersonalRecord: PersonalRecord | null;
 
   @Type(() => Number)
   sets!: number;
@@ -26,6 +29,7 @@ export class Exercise implements ExerciseInterface {
     muscleGroup: string,
     reps: string,
     sets: number,
+    lastPersonalRecord: PersonalRecord | null,
   ) {
     this.id = id;
     this.name = name;
@@ -33,8 +37,6 @@ export class Exercise implements ExerciseInterface {
     this.muscleGroup = muscleGroup;
     this.reps = reps;
     this.sets = sets;
+    this.lastPersonalRecord = lastPersonalRecord;
   }
-  // get formattedSets(): number {
-  //   return parseInt(this.sets);
-  // }
 }
