@@ -68,7 +68,7 @@ export default function Select({
       sx={{
         borderColor: '#AFB1B2',
         '.MuiSvgIcon-root': {
-          fill: '#AFB1B2 !important',
+          fill: '#F8F8FF !important',
         },
       }}
       MenuProps={{
