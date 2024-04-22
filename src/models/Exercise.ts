@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import 'reflect-metadata';
-import { PersonalRecord } from './PersonalRecord';
+import { PersonalRecord } from '@models/PersonalRecord';
 interface ExerciseInterface {
   id: string;
   workoutId: string;

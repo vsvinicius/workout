@@ -10,7 +10,6 @@ interface ExerciseListProps {
 }
 
 export default function ExerciseList({ workoutId }: ExerciseListProps) {
-  console.debug([`workout-exercises-${workoutId}`]);
   const { data: exercises, isLoading } = useQuery({
     queryKey: [`workout-exercises-${workoutId}`],
     queryFn: () => ExercisesService.getWorkoutExercises(workoutId),

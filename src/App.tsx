@@ -4,9 +4,9 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { StyledEngineProvider } from '@mui/system';
 
 import Router from '@src/Router';
-import UserContextProvider from './context/UserContext';
+import UserContextProvider from '@context/UserContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import theme from './styles/theme';
+import theme from '@styles/theme';
 
 const queryClient = new QueryClient();
 

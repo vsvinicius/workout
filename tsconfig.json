@@ -28,6 +28,9 @@
       "@services/*": [
         "./src/services/*"
       ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
       "@src/*": [
         "./src/*"
       ]
