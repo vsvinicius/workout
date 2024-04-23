@@ -35,6 +35,7 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   );
   const [unit, setUnit] = useState(exercise.lastPersonalRecord?.unit || '');
   const [responseMessage, setResponseMessage] = useState<string>();
+  const [showResponseMessage, setShowResponseMessage] = useState(false);
 
   const { mutateAsync: createPersonalRecord } = useMutation({
     mutationFn: PersonalRecordsService.create.bind(PersonalRecordsService),
@@ -61,9 +62,10 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   }
   function setAutoHideResponseMessage(message: string) {
     setResponseMessage(message);
+    setShowResponseMessage(true);
     setTimeout(() => {
-      setResponseMessage(undefined);
-    }, 1000);
+      setShowResponseMessage(false);
+    }, 1500);
   }
 
   async function handleSavePersonalRecord() {
@@ -87,6 +89,9 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
       await queryClient.refetchQueries({
         queryKey: [`workout-exercises-${exercise.workoutId}`],
       });
+      setTimeout(() => {
+        setIsExpanded(false);
+      }, 500);
     } catch {
       setAutoHideResponseMessage('Erro ao salvar, tente novamente mais tarde');
     }
@@ -150,7 +155,7 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
             />
           </IconButton>
         </Box>
-        <Collapse in={isExpanded}>
+        <Collapse in={isExpanded} timeout={500}>
           <Box className="flex flex-col items-center gap-5 pt-4">
             <div className="flex gap-3 px-4">
               <TextField
@@ -198,14 +203,14 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
           </Box>
         </Collapse>
       </Card>
-      {responseMessage && (
+      <Collapse in={showResponseMessage}>
         <Alert
-          severity={responseMessage.includes('erro') ? 'error' : 'success'}
+          severity={responseMessage?.includes('erro') ? 'error' : 'success'}
           variant="filled"
         >
           {responseMessage}
         </Alert>
-      )}
+      </Collapse>
     </>
   );
 }
