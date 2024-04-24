@@ -1,6 +1,6 @@
 import { Box, TextField, MenuItem } from '@mui/material';
 import Button from '@components/Button';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useAlertContext } from '@context/AlertContext';
 import PersonalRecordsService from '@services/PersonalRecordsService';
 import { useState } from 'react';
