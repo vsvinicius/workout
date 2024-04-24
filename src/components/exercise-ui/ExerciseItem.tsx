@@ -29,6 +29,22 @@ const weightUnitOptions = [
 export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   const queryClient = useQueryClient();
   const { showSuccessMessage, showErrorMessage } = useAlertContext();
+  const { mutateAsync: createPersonalRecord, isPending: isCreating } =
+    useMutation({
+      mutationFn: PersonalRecordsService.create.bind(PersonalRecordsService),
+      onSuccess: () => showSuccessMessage('Novo recorde pessoal adicionado'),
+      onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
+      onSettled: handleAfterMutation,
+    });
+
+  const { mutateAsync: updatePersonalRecord, isPending: isUpdating } =
+    useMutation({
+      mutationFn: PersonalRecordsService.update.bind(PersonalRecordsService),
+      onSuccess: () => showSuccessMessage('Recorde pessoal atualizado'),
+      onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
+      onSettled: handleAfterMutation,
+    });
+
   const [unit, setUnit] = useState(exercise.lastPersonalRecord?.unit || '');
   const [weight, setWeight] = useState(
     exercise.lastPersonalRecord?.weight || '',
@@ -36,24 +52,20 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   const [currentSet, setCurrentSet] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const { mutateAsync: createPersonalRecord, isPending: isCreating } =
-    useMutation({
-      mutationFn: PersonalRecordsService.create.bind(PersonalRecordsService),
-      onSuccess: () => showSuccessMessage('Novo recorde pessoal adicionado'),
-      onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
-    });
-  const { mutateAsync: updatePersonalRecord, isPending: isUpdating } =
-    useMutation({
-      mutationFn: PersonalRecordsService.update.bind(PersonalRecordsService),
-      onSuccess: () => showSuccessMessage('Recorde pessoal atualizado'),
-      onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
-    });
-
   const shouldDisableSaveButton =
     !weight ||
     !unit ||
     (weight === exercise.lastPersonalRecord?.weight &&
       unit === exercise.lastPersonalRecord?.unit);
+
+  async function handleAfterMutation() {
+    await queryClient.refetchQueries({
+      queryKey: [`workout-exercises-${exercise.workoutId}`],
+    });
+    setTimeout(() => {
+      setIsExpanded(false);
+    }, 500);
+  }
 
   function handleClickNextSet() {
     setCurrentSet((prevValue) => Math.min(prevValue + 1, exercise.sets));
@@ -85,12 +97,6 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
         unit,
       });
     }
-    await queryClient.refetchQueries({
-      queryKey: [`workout-exercises-${exercise.workoutId}`],
-    });
-    setTimeout(() => {
-      setIsExpanded(false);
-    }, 500);
   }
 
   return (
