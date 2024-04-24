@@ -6,66 +6,16 @@ import {
   CachedOutlined,
   FitnessCenterOutlined,
 } from '@mui/icons-material';
-import {
-  Card,
-  Box,
-  Typography,
-  IconButton,
-  TextField,
-  MenuItem,
-  Collapse,
-} from '@mui/material';
+import { Card, Box, Typography, IconButton, Collapse } from '@mui/material';
 import cn from '@lib/classnames';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import PersonalRecordsService from '@services/PersonalRecordsService';
-import { useAlertContext } from '@context/AlertContext';
 import Button from '@components/Button';
-
-const weightUnitOptions = [
-  { label: 'Quilos (kg)', value: 'kg' },
-  { label: 'Placas (un)', value: 'un' },
-];
+import { useQueryClient } from '@tanstack/react-query';
+import PersonalRecordForm from './PersonalRecordForm';
 
 export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   const queryClient = useQueryClient();
-  const { showSuccessMessage, showErrorMessage } = useAlertContext();
-  const { mutateAsync: createPersonalRecord, isPending: isCreating } =
-    useMutation({
-      mutationFn: PersonalRecordsService.create.bind(PersonalRecordsService),
-      onSuccess: () => showSuccessMessage('Novo recorde pessoal adicionado'),
-      onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
-      onSettled: handleAfterMutation,
-    });
-
-  const { mutateAsync: updatePersonalRecord, isPending: isUpdating } =
-    useMutation({
-      mutationFn: PersonalRecordsService.update.bind(PersonalRecordsService),
-      onSuccess: () => showSuccessMessage('Recorde pessoal atualizado'),
-      onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
-      onSettled: handleAfterMutation,
-    });
-
-  const [unit, setUnit] = useState(exercise.lastPersonalRecord?.unit || '');
-  const [weight, setWeight] = useState(
-    exercise.lastPersonalRecord?.weight || '',
-  );
   const [currentSet, setCurrentSet] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const shouldDisableSaveButton =
-    !weight ||
-    !unit ||
-    (weight === exercise.lastPersonalRecord?.weight &&
-      unit === exercise.lastPersonalRecord?.unit);
-
-  async function handleAfterMutation() {
-    await queryClient.refetchQueries({
-      queryKey: [`workout-exercises-${exercise.workoutId}`],
-    });
-    setTimeout(() => {
-      setIsExpanded(false);
-    }, 500);
-  }
 
   function handleClickNextSet() {
     setCurrentSet((prevValue) => Math.min(prevValue + 1, exercise.sets));
@@ -76,34 +26,20 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
     else handleClickNextSet();
   }
 
-  function handleChangeWeight(e: React.ChangeEvent<HTMLInputElement>) {
-    setWeight(e.target.value);
-  }
-
-  function handleChangeUnit(e: React.ChangeEvent<HTMLInputElement>) {
-    setUnit(e.target.value);
-  }
-
-  async function handleSavePersonalRecord() {
-    if (weight !== exercise.lastPersonalRecord?.weight) {
-      await createPersonalRecord({
-        exerciseId: exercise.id,
-        unit,
-        weight,
-      });
-    } else {
-      await updatePersonalRecord({
-        id: exercise.lastPersonalRecord!.id,
-        unit,
-      });
-    }
+  async function handleAfterUpdate() {
+    await queryClient.refetchQueries({
+      queryKey: [`workout-exercises-${exercise.workoutId}`],
+    });
+    setTimeout(() => {
+      setIsExpanded(false);
+    }, 500);
   }
 
   return (
     <Card
       elevation={10}
       className={cn(
-        'my-3 h-fit min-h-32 w-[96%] border border-solid border-white-light bg-background-light px-6 py-8',
+        'my-3 h-fit min-h-32 w-[96%] border border-solid border-white-light bg-background-light px-4 py-8',
       )}
       sx={{
         transition: 'min-height 0.3s linear',
@@ -146,60 +82,25 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
           disabled={currentSet === exercise.sets}
         >{`${currentSet}/${exercise.sets}`}</Button>
         <IconButton
-          className="relative left-3"
+          className="relative left-3 p-0"
           onClick={() => setIsExpanded((prevState) => !prevState)}
         >
           <ArrowDropDownOutlined
-            className={cn('h-9 w-10 text-white', {
-              'rotate-180': isExpanded,
-            })}
+            className={cn(
+              'h-9 w-10 text-white transition-transform duration-500',
+              {
+                'rotate-180': isExpanded,
+              },
+            )}
           />
         </IconButton>
       </Box>
       <Collapse in={isExpanded} timeout={500}>
-        <Box className="flex flex-col items-center gap-5 pt-4">
-          <div className="flex gap-3 px-4">
-            <TextField
-              label="Peso utilizado"
-              type="number"
-              variant="standard"
-              InputProps={{ className: 'text-white' }}
-              value={weight}
-              onChange={handleChangeWeight}
-            />
-            <TextField
-              label="Unidade"
-              variant="standard"
-              select
-              className="w-28"
-              value={unit}
-              onChange={handleChangeUnit}
-              InputProps={{
-                className: 'text-white',
-                sx: {
-                  '.MuiSvgIcon-root': {
-                    fill: '#F8F8FF !important',
-                  },
-                },
-              }}
-            >
-              {weightUnitOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-          <Button
-            variant="contained"
-            className="h-10 w-28 capitalize"
-            onClick={handleSavePersonalRecord}
-            disabled={shouldDisableSaveButton}
-            isLoading={isCreating || isUpdating}
-          >
-            Salvar
-          </Button>
-        </Box>
+        <PersonalRecordForm
+          exerciseId={exercise.id}
+          lastPersonalRecord={exercise.lastPersonalRecord}
+          onUpdateEnd={handleAfterUpdate}
+        />
       </Collapse>
     </Card>
   );
