@@ -15,11 +15,11 @@ import {
   TextField,
   MenuItem,
   Collapse,
-  Alert,
 } from '@mui/material';
 import cn from '@lib/classnames';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import PersonalRecordsService from '@services/PersonalRecordsService';
+import { useAlertContext } from '@context/AlertContext';
 
 const weightUnitOptions = [
   { label: 'Quilos (kg)', value: 'kg' },
@@ -27,21 +27,30 @@ const weightUnitOptions = [
 ];
 
 export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
-  const [currentSet, setCurrentSet] = useState<number>(0);
-  const [isExpanded, setIsExpanded] = useState(false);
   const queryClient = useQueryClient();
+  const { showSuccessMessage, showErrorMessage } = useAlertContext();
+  const [unit, setUnit] = useState(exercise.lastPersonalRecord?.unit || '');
   const [weight, setWeight] = useState(
     exercise.lastPersonalRecord?.weight || '',
   );
-  const [unit, setUnit] = useState(exercise.lastPersonalRecord?.unit || '');
-  const [responseMessage, setResponseMessage] = useState<string>();
-  const [showResponseMessage, setShowResponseMessage] = useState(false);
+  const [currentSet, setCurrentSet] = useState<number>(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const shouldDisableSaveButton =
+    !weight ||
+    !unit ||
+    (weight === exercise.lastPersonalRecord?.weight &&
+      unit === exercise.lastPersonalRecord?.unit);
 
   const { mutateAsync: createPersonalRecord } = useMutation({
     mutationFn: PersonalRecordsService.create.bind(PersonalRecordsService),
+    onSuccess: () => showSuccessMessage('Novo recorde pessoal adicionado'),
+    onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
   });
   const { mutateAsync: updatePersonalRecord } = useMutation({
     mutationFn: PersonalRecordsService.update.bind(PersonalRecordsService),
+    onSuccess: () => showSuccessMessage('Recorde pessoal atualizado'),
+    onError: () => showErrorMessage('Ocorreu um erro, tente novamente'),
   });
 
   function handleClickNextSet() {
@@ -60,41 +69,26 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   function handleChangeUnit(e: React.ChangeEvent<HTMLInputElement>) {
     setUnit(e.target.value);
   }
-  function setAutoHideResponseMessage(message: string) {
-    setResponseMessage(message);
-    setShowResponseMessage(true);
-    setTimeout(() => {
-      setShowResponseMessage(false);
-    }, 1500);
-  }
 
   async function handleSavePersonalRecord() {
-    try {
-      if (weight !== exercise.lastPersonalRecord?.weight) {
-        await createPersonalRecord({
-          exerciseId: exercise.id,
-          unit,
-          weight,
-        });
-        setAutoHideResponseMessage(
-          'Novo recorde pessoal adicionado com sucesso!',
-        );
-      } else {
-        await updatePersonalRecord({
-          id: exercise.lastPersonalRecord!.id,
-          unit,
-        });
-        setAutoHideResponseMessage('Recorde pessoal atualizado!');
-      }
-      await queryClient.refetchQueries({
-        queryKey: [`workout-exercises-${exercise.workoutId}`],
+    if (weight !== exercise.lastPersonalRecord?.weight) {
+      await createPersonalRecord({
+        exerciseId: exercise.id,
+        unit,
+        weight,
       });
-      setTimeout(() => {
-        setIsExpanded(false);
-      }, 500);
-    } catch {
-      setAutoHideResponseMessage('Erro ao salvar, tente novamente mais tarde');
+    } else {
+      await updatePersonalRecord({
+        id: exercise.lastPersonalRecord!.id,
+        unit,
+      });
     }
+    await queryClient.refetchQueries({
+      queryKey: [`workout-exercises-${exercise.workoutId}`],
+    });
+    setTimeout(() => {
+      setIsExpanded(false);
+    }, 500);
   }
 
   return (
@@ -193,24 +187,13 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
               variant="contained"
               className="h-10 w-28 capitalize"
               onClick={handleSavePersonalRecord}
-              disabled={
-                weight === exercise.lastPersonalRecord?.weight &&
-                unit === exercise.lastPersonalRecord.unit
-              }
+              disabled={shouldDisableSaveButton}
             >
               Salvar
             </Button>
           </Box>
         </Collapse>
       </Card>
-      <Collapse in={showResponseMessage}>
-        <Alert
-          severity={responseMessage?.includes('erro') ? 'error' : 'success'}
-          variant="filled"
-        >
-          {responseMessage}
-        </Alert>
-      </Collapse>
     </>
   );
 }
