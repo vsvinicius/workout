@@ -12,6 +12,11 @@ class PersonalRecordsService {
 
   async create(personalRecordForm: PersonalRecordForm) {
     const { exerciseId, unit, weight } = personalRecordForm;
+    await new Promise<void>((resolve) =>
+      setTimeout(() => {
+        resolve();
+      }, 3000),
+    );
     return this.httpClient.post(this.requestPath, {
       data: {
         exerciseId,
