@@ -7,6 +7,7 @@ import Router from '@src/Router';
 import UserContextProvider from '@context/UserContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import theme from '@styles/theme';
+import AlertContextProvider from '@context/AlertContext';
 
 const queryClient = new QueryClient();
 
@@ -17,8 +18,10 @@ export default function App() {
         <StyledEngineProvider injectFirst>
           <QueryClientProvider client={queryClient}>
             <UserContextProvider>
-              <CssBaseline />
-              <Router />
+              <AlertContextProvider>
+                <CssBaseline />
+                <Router />
+              </AlertContextProvider>
             </UserContextProvider>
           </QueryClientProvider>
         </StyledEngineProvider>
