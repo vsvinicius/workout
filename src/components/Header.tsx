@@ -55,7 +55,11 @@ export default function Header() {
           onClick={() => toggleDrawer(false)}
         >
           <List>
-            <ListItem key="current-workout" disablePadding>
+            <ListItem
+              key="current-workout"
+              disablePadding
+              onClick={() => toggleDrawer(false)}
+            >
               <ListItemButton>
                 <ListItemIcon>
                   <FitnessCenterOutlined className="w-5 -rotate-45 text-white" />
