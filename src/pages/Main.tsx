@@ -49,17 +49,14 @@ export default function Main() {
   }
 
   return (
-    <div className="h-full w-full bg-[#1C1C1E]" style={{ minHeight: '100vh' }}>
-      <header className="relative flex justify-center pt-10">
+    <div className="h-full w-full" style={{ minHeight: '100vh' }}>
+      <header className="relative flex justify-center">
         <Select
           options={workoutOptions}
           isLoading={isLoading}
           onChange={handleChangeWorkout}
           required
         />
-        <div className="absolute right-5">
-          <UsersAvatar />
-        </div>
       </header>
       <main className="mt-8">
         {workout && <ExerciseList workoutId={workout?.id} key={workout?.id} />}
