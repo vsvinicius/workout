@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Exercise } from '@models/Exercise';
 import {
   ArrowDropDownOutlined,
@@ -19,10 +19,11 @@ export default function ExerciseItem({ exercise }: { exercise: Exercise }) {
   const [currentSet, setCurrentSet] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isWaitingCountdown, setIsWaitingCountdown] = useState(false);
-  const restingTime = localStorage.getItem(RESTING_TIME_KEY);
+  const restingTime = useMemo(() => localStorage.getItem(RESTING_TIME_KEY), []);
 
   function handleClickNextSet() {
-    restingTime && setIsWaitingCountdown(true);
+    if (restingTime && currentSet < exercise.sets - 1)
+      setIsWaitingCountdown(true);
     setCurrentSet((prevValue) => Math.min(prevValue + 1, exercise.sets));
   }
 
