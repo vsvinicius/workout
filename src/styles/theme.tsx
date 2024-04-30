@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 
-export default createTheme({
+const theme = createTheme({
   palette: {
     mode: 'light',
   },
@@ -53,3 +53,5 @@ export default createTheme({
     },
   },
 });
+
+export default theme;

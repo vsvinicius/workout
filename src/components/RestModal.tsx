@@ -1,6 +1,5 @@
 import {
   Backdrop,
-  Box,
   Divider,
   Fade,
   Modal,

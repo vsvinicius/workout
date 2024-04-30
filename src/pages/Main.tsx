@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import UsersAvatar from '@components/UsersAvatar';
 import { useUserContext } from '@context/UserContext';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import WorkoutsService from '@services/WorkoutsService';
@@ -38,6 +37,7 @@ export default function Main() {
       queryKey: [`user-workouts-${selectedUser?.id}`],
     });
     refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUser]);
 
   function handleChangeWorkout(selectedOption: OptionType) {

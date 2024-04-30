@@ -22,7 +22,7 @@ export class PersonalRecord implements PersonalRecordInterface {
   unit: string;
 
   @Type(() => Date)
-  createdAt: Date;
+    createdAt: Date;
 
   constructor(
     id: string,
