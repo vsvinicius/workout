@@ -20,7 +20,7 @@ export class Exercise implements ExerciseInterface {
   lastPersonalRecord: PersonalRecord | null;
 
   @Type(() => Number)
-  sets!: number;
+    sets!: number;
 
   constructor(
     id: string,

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import UsersAvatar from '@components/UsersAvatar';
 import { useUserContext } from '@context/UserContext';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import WorkoutsService from '@services/WorkoutsService';
@@ -38,6 +37,7 @@ export default function Main() {
       queryKey: [`user-workouts-${selectedUser?.id}`],
     });
     refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUser]);
 
   function handleChangeWorkout(selectedOption: OptionType) {
@@ -49,17 +49,14 @@ export default function Main() {
   }
 
   return (
-    <div className="h-full w-full bg-[#1C1C1E]" style={{ minHeight: '100vh' }}>
-      <header className="relative flex justify-center pt-10">
+    <div className="h-full w-full" style={{ minHeight: '100vh' }}>
+      <header className="relative flex justify-center">
         <Select
           options={workoutOptions}
           isLoading={isLoading}
           onChange={handleChangeWorkout}
           required
         />
-        <div className="absolute right-5">
-          <UsersAvatar />
-        </div>
       </header>
       <main className="mt-8">
         {workout && <ExerciseList workoutId={workout?.id} key={workout?.id} />}

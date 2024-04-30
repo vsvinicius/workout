@@ -8,6 +8,7 @@ import UserContextProvider from '@context/UserContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import theme from '@styles/theme';
 import AlertContextProvider from '@context/AlertContext';
+import Header from '@components/Header';
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,10 @@ export default function App() {
             <UserContextProvider>
               <AlertContextProvider>
                 <CssBaseline />
-                <Router />
+                <div className="bg-background">
+                  <Header />
+                  <Router />
+                </div>
               </AlertContextProvider>
             </UserContextProvider>
           </QueryClientProvider>
