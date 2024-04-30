@@ -10,11 +10,8 @@ const AUDIO_VOLUME = 0.05;
 export default function Countdown({ onEnd }: { onEnd: () => void }) {
   const [timer, setTimer] = useState<number>();
   const intervalId = useRef<NodeJS.Timeout>();
-  const restingTime = useMemo(() => {
-    const time = localStorage.getItem(RESTING_TIME_KEY);
-    return parseInt(time || '0');
-  }, []);
-  const isMounted = useRef(false);
+  const restingTime = parseInt(localStorage.getItem(RESTING_TIME_KEY) || '0');
+  const isMounted = useRef(import.meta.env.PROD);
   const countdownAudio = useMemo(() => {
     const audio = new Audio(countdown);
     audio.volume = AUDIO_VOLUME;
@@ -43,13 +40,11 @@ export default function Countdown({ onEnd }: { onEnd: () => void }) {
   }, [timer]);
 
   return (
-    <>
-      <Typography
-        variant="h5"
-        className={cn('absolute right-1/2 top-16 font-extrabold text-white')}
-      >
-        {timer}
-      </Typography>
-    </>
+    <Typography
+      variant="h5"
+      className={cn('absolute right-1/2 top-16 font-extrabold text-white')}
+    >
+      {timer}
+    </Typography>
   );
 }

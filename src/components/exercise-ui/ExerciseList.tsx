@@ -4,6 +4,7 @@ import ExercisesService from '@services/ExercisesService';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import ExerciseItem from './ExerciseItem';
+import { RESTING_TIME_KEY } from '@components/Header';
 
 interface ExerciseListProps {
   workoutId: string;
@@ -46,7 +47,10 @@ export default function ExerciseList({ workoutId }: ExerciseListProps) {
       </Typography>
       <div className="flex flex-col items-center">
         {exerciseByMuscleGroups?.[group].map((exercise) => (
-          <ExerciseItem exercise={exercise} key={exercise.id} />
+          <ExerciseItem
+            exercise={exercise}
+            key={`${exercise.id}-${localStorage.getItem(RESTING_TIME_KEY)}`}
+          />
         ))}
       </div>
     </div>
