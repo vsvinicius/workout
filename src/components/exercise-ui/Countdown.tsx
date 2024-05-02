@@ -5,7 +5,7 @@ import { RESTING_TIME_KEY } from '@components/Header';
 import countdown from '@assets/countdown.mp3';
 
 const ONE_SECOND = 1000;
-const AUDIO_VOLUME = 0.05;
+const AUDIO_VOLUME = 0.5;
 
 export default function Countdown({ onEnd }: { onEnd: () => void }) {
   const [timer, setTimer] = useState<number>();
