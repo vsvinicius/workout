@@ -12,6 +12,7 @@ export default function Countdown({ onEnd }: { onEnd: () => void }) {
   const intervalId = useRef<NodeJS.Timeout>();
   const restingTime = parseInt(localStorage.getItem(RESTING_TIME_KEY) || '0');
   const isMounted = useRef(import.meta.env.PROD);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const countdownAudio = useMemo(() => {
     const audio = new Audio(countdown);
     audio.volume = AUDIO_VOLUME;
@@ -28,7 +29,7 @@ export default function Countdown({ onEnd }: { onEnd: () => void }) {
     if (timer === 0) {
       clearInterval(intervalId.current);
 
-      countdownAudio?.play();
+      !isSafari && countdownAudio?.play();
       onEnd();
     }
     if (!timer) {
